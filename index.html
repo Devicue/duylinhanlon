@@ -63,6 +63,112 @@
             color: #4A90E2;
         }
 
+        /* Nút quà tặng trong menu */
+        .gift-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(245, 87, 108, 0.3);
+        }
+
+        .gift-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.5);
+        }
+
+        /* Popup/Modal cho quà tặng */
+        .gift-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .gift-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gift-modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: slideDown 0.4s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .gift-modal-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite;
+        }
+
+        .gift-modal h2 {
+            color: #f5576c;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .gift-modal-text {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #f5576c;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         /* Nút toggle menu cho mobile */
         .menu-toggle {
             display: none;
@@ -303,9 +409,23 @@
                 <li><a href="#services">Dịch vụ</a></li>
                 <li><a href="#about">Giới thiệu</a></li>
                 <li><a href="#contact">Liên hệ</a></li>
+                <li><button class="gift-button" id="gift-btn">🎁 Quà tặng</button></li>
             </ul>
         </div>
     </nav>
+
+    <!-- ===== GIFT MODAL - Popup quà tặng ===== -->
+    <div class="gift-modal" id="gift-modal">
+        <div class="gift-modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="gift-modal-icon">🎁</div>
+            <h2>Chúc Mừng!</h2>
+            <div class="gift-modal-text" id="gift-text">
+                <!-- Nội dung text sẽ được điền vào đây -->
+                Duy Linh và Anh Linh là đôi bạn cùng lọ chéo!
+            </div>
+        </div>
+    </div>
 
     <!-- ===== HERO SECTION - Phần giới thiệu chính ===== -->
     <section class="hero" id="home">
@@ -356,7 +476,7 @@
 
             <div class="footer-section">
                 <h3>Liên Hệ</h3>
-                <p>📧 Email: contact@techsolution.vn</p>
+                <p>📧 Email: duylinh@anbuoi.vn</p>
                 <p>📞 Điện thoại: (024) 1234 5678</p>
                 <p>📍 Địa chỉ: Hà Nội, Việt Nam</p>
             </div>
@@ -390,6 +510,29 @@
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
             });
+        });
+
+        // Xử lý Gift Modal
+        const giftBtn = document.getElementById('gift-btn');
+        const giftModal = document.getElementById('gift-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        // Mở popup khi click nút quà tặng
+        giftBtn.addEventListener('click', function() {
+            giftModal.classList.add('active');
+            navMenu.classList.remove('active'); // Đóng menu mobile nếu đang mở
+        });
+
+        // Đóng popup khi click nút X
+        closeModal.addEventListener('click', function() {
+            giftModal.classList.remove('active');
+        });
+
+        // Đóng popup khi click bên ngoài
+        giftModal.addEventListener('click', function(e) {
+            if (e.target === giftModal) {
+                giftModal.classList.remove('active');
+            }
         });
 
         // Smooth scroll cho các link
